@@ -97,12 +97,3 @@ const deletePost = (id: Number) => {
 };
 
 export { getPosts, addPost, getSinglePost, updatePost, deletePost };
-
-// const getPosts = (callback: Function) => {
-// 	const sql: string =
-// 		"SELECT post.id, content, author, date, topic_id, title FROM post INNER JOIN topic t ON post.topic_id = t.id";
-// 	dbConfig.query(sql, (err, res) => {
-// 		if (err) callback(err, null);
-// 		else callback(null, res);
-// 	});
-// };
