@@ -23,8 +23,12 @@ app.get("/", function (req, res) {
 
 app.get("/api/posts", async (req: Request, res: Response) => {
 	try {
-		const posts = await getPosts();
-		res.status(200).json(posts);
+		const posts: Post = await getPosts();
+		if (posts.length === 0) {
+			res.send("no post found");
+		} else {
+			res.status(200).json(posts);
+		}
 	} catch (err) {
 		res.status(400).json({ error: err });
 	}
@@ -35,8 +39,8 @@ app.get("/api/posts", async (req: Request, res: Response) => {
 app.post("/api/new-post", async (req: Request, res: Response) => {
 	const body: Post = req.body;
 	try {
-		const newPost = await addPost(body);
-		res.status(200).json(newPost);
+		await addPost(body);
+		res.status(200).send("New post added successfully to the forum");
 	} catch (err) {
 		res.status(400).json({ error: err });
 	}
@@ -73,7 +77,7 @@ app.put("/api/update-post/:id", async (req: Request, res: Response) => {
 
 // delete post selected with its id :
 
-app.get("/api/delete-post/:id", async (req: Request, res: Response) => {
+app.delete("/api/delete-post/:id", async (req: Request, res: Response) => {
 	const id = parseInt(req.params.id);
 	try {
 		await deletePost(id);

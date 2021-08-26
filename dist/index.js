@@ -27,36 +27,21 @@ app.get("/", function (req, res) {
 app.get("/api/posts", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const posts = yield post_1.getPosts();
-        res.status(200).send(posts);
+        res.status(200).json(posts);
     }
     catch (err) {
-        res.status(400).send(err);
+        res.status(400).json({ error: err });
     }
 }));
-// app.get("/api/posts", async (req: Request, res: Response) => {
-// 	try {
-// 		const posts = await getPosts((err: Error, posts: Post) => {
-// 			if (err) {
-// 				return res.status(400).send(err);
-// 			}
-// 			if (posts.length === 0) {
-// 				return res.send("No post found");
-// 			}
-// 			res.status(200).send(posts);
-// 		});
-// 	} catch (err) {
-// 		res.status(400).send(err);
-// 	}
-// });
 // add a new post to database :
 app.post("/api/new-post", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
     try {
         const newPost = yield post_1.addPost(body);
-        res.status(200).send(newPost);
+        res.status(200).json(newPost);
     }
     catch (err) {
-        res.status(400).send(err);
+        res.status(400).json({ error: err });
     }
 }));
 // fetch single post with its id :
@@ -68,26 +53,12 @@ app.get("/api/post/:id", (req, res) => __awaiter(void 0, void 0, void 0, functio
             res.send("no post found with this id");
         }
         else {
-            res.status(200).send(post);
+            res.status(200).json(post);
         }
     }
     catch (err) {
-        res.status(400).send(err);
+        res.status(400).json({ error: err });
     }
-    // try {
-    // 	const post = await getSinglePost(id, (err: Error, post: Post) => {
-    // 		if (err) {
-    // 			return res.status(400).send(err);
-    // 		}
-    // 		if (post.length < 1) {
-    // 			return res.status(400).send("No post found with this id");
-    // 		} else {
-    // 			return res.status(200).send(post);
-    // 		}
-    // 	});
-    // } catch (err) {
-    // 	res.status(400).send(err);
-    // }
 }));
 // update post selected with its id :
 app.put("/api/update-post/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -98,18 +69,18 @@ app.put("/api/update-post/:id", (req, res) => __awaiter(void 0, void 0, void 0, 
         return res.status(200).send(`Post with id:${id} updated successfully `);
     }
     catch (err) {
-        res.status(400).send(err);
+        res.status(400).json({ error: err });
     }
 }));
 // delete post selected with its id :
-app.get("/api/delete-post/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.delete("/api/delete-post/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = parseInt(req.params.id);
     try {
         yield post_1.deletePost(id);
         return res.status(200).send("Post entry successfully deleted");
     }
     catch (err) {
-        res.status(400).send(err);
+        res.status(400).json({ error: err });
     }
 }));
 app.listen(PORT, () => {
